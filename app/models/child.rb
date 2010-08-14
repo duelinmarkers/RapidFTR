@@ -10,7 +10,11 @@ class Child < CouchRestRails::Document
           :map => "function(doc) {
               if ((doc['couchrest-type'] == 'Child') && doc['name'])
              {
+                tokens = doc['name'].split(/[^A-Z0-9\-_]+/i);
                 emit(doc['name'], doc);
+                tokens.map(function(token) {
+                  emit(token, doc);
+                });
              }
           }"
 
@@ -19,6 +23,15 @@ class Child < CouchRestRails::Document
   def self.all
     view('by_name', {})
   end
+  
+  def name
+    self["name"]
+  end
+  
+  def name= value
+    self["name"]= value
+  end
+
 
   def self.new_with_user_name(user_name, fields = {})
     child = new(fields)

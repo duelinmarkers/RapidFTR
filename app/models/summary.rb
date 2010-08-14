@@ -21,7 +21,8 @@ class Summary < CouchRestRails::Document
   def self.basic_search(child_name, unique_id)
     results = search_by_unique_identifier(unique_id)
     results = search_by_name(child_name) if results.nil?
-
+    
+    
     return [] unless results
 
     results.sort { |lhs,rhs| lhs["name"] <=> rhs["name"]} 
@@ -48,7 +49,7 @@ class Summary < CouchRestRails::Document
   def self.search_by_name(search_value)
     if (search_value && !search_value.empty?)
       args = create_key_range(search_value)
-      Summary.view("by_name", args)
+      Child.view("by_name", args).uniq
     end
   end
 
