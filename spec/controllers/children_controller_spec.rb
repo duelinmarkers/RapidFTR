@@ -194,6 +194,15 @@ describe ChildrenController do
       mock_child
     end
 
+    it 'should validate at least one checkbox is selected for export to PDF' do
+      stub_out_pdf_generator
+      post( 
+        :photo_pdf, 
+        { 'some_other_post_param' => 'blah' } 
+      )
+      response.flash[:notice].should == 'You must select at least one record to be exported'
+    end
+
     it 'extracts a single selected id from post params correctly' do
       stub_out_pdf_generator
       Child.should_receive(:get).with('a_child_id')
