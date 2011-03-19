@@ -1,1 +1,1 @@
-Sunspot.config.solr.url = "http://localhost:#{ ENV['SOLR_PORT'] || "8983" }/solr"
+Sunspot.config.solr.url = ENV['WEBSOLR_URL'] || "http://localhost:#{ ENV['SOLR_PORT'] || "8983" }/solr"

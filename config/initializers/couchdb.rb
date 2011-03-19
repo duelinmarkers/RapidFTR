@@ -27,7 +27,7 @@ rescue
 else
 
   COUCHDB_CONFIG = {
-    :host_path => "#{protocol}://#{authorized_host}:#{port}",
+    :host_path => ENV['CLOUDANT_URL'] || "#{protocol}://#{authorized_host}:#{port}",
     :db_prefix => "#{db_prefix}",
     :db_suffix => "#{db_suffix}"
   }
