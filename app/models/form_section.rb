@@ -4,6 +4,7 @@ class FormSection < CouchRestRails::Document
   property :unique_id
   property :name
   property :description
+  property :help_text
   property :enabled, :cast_as => 'boolean', :default => true
   property :order, :type      => Integer
   property :fields, :cast_as => ['Field']
@@ -29,7 +30,8 @@ class FormSection < CouchRestRails::Document
   def self.all_child_field_names
     all_child_fields.map{ |field| field["name"] }
   end
-
+  
+  
   def self.all_enabled_child_fields
     enabled_by_order.map do |form_section|
       form_section.fields
@@ -62,10 +64,15 @@ class FormSection < CouchRestRails::Document
     all.find { |form| form.fields.find { |field| field.name == field_name } }
   end
 
-  def self.create_new_custom name, description = "", enabled=true
+  def self.create_new_custom name, description = "", help_text = "", enabled=true
     unique_id = name.dehumanize
     max_order= (all.map{|form_section| form_section.order}).max || 0
-    form_section = FormSection.new :unique_id=>unique_id, :name=>name, :description=>description, :enabled=>enabled, :order=>max_order+1
+    form_section = FormSection.new :unique_id=>unique_id, 
+                                   :name=>name, 
+                                   :description=>description, 
+                                   :help_text=>help_text, 
+                                   :enabled=>enabled, 
+                                   :order=>max_order+1
     form_section = create! form_section if form_section.valid?
     form_section
   end
@@ -123,7 +130,11 @@ class FormSection < CouchRestRails::Document
     matching_fields = fields.select { |field| fields_to_enable.include? field.name }
     matching_fields.each{ |field| field.enabled = true}
   end
-
+  
+  def all_text_fields
+    self.fields.select {|field| field.type == Field::TEXT_FIELD || field.type == Field::TEXT_AREA }
+  end 
+  
   protected
 
   def validate_unique_name

@@ -34,13 +34,18 @@ class Field < Hash
   validates_presence_of :display_name 
   validates_with_method :display_name, :method => :validate_unique
   validates_with_method :option_strings, :method => :validate_has_2_options
-  
+  validates_format_of :display_name, :with => /([a-zA-Z]+)/, :message => "Display name must contain at least one alphabetic characters"
+    
   def form
     base_doc
   end
   
   def form_type
     FIELD_FORM_TYPES[type]
+  end
+  
+  def self.all_text_names
+    FormSection.all.map { |form| form.all_text_fields.map(&:name) }.flatten
   end
   
   def validate_has_2_options
@@ -128,4 +133,6 @@ class Field < Hash
   def self.new_select_box field_name, option_strings, display_name = nil
     Field.new :name => field_name, :display_name=>display_name||field_name.humanize, :type => SELECT_BOX, :option_strings => option_strings
   end
+  
+  
 end

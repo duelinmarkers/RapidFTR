@@ -36,12 +36,18 @@ describe "Child record field view model" do
     it "should not allow blank display name" do  
       field = Field.new(:display_name => "")
       field.valid?
-      field.errors.on(:display_name).should ==  ["Display name must not be blank"] 
+      field.errors.on(:display_name).first.should == "Display name must not be blank"
+    end
+
+    it "should not allow display name without alphabetic characters" do  
+      field = Field.new(:display_name => "!@£$@")
+      field.valid?.should == false
+      field.errors.on(:display_name).should include("Display name must contain at least one alphabetic characters")
     end
   
     it "should validate unique within form" do  
-      form = FormSection.new(:fields => [Field.new(:name => "test", :display_name => "test")] )
-      field = Field.new(:display_name => "test", :name => "test")
+      form = FormSection.new(:fields => [Field.new(:name => "other", :display_name => "other")] )
+      field = Field.new(:display_name => "other", :name => "other")
       form.fields << field
     
       field.valid?
@@ -77,11 +83,13 @@ describe "Child record field view model" do
 
   describe "save" do
     it "should be enabled" do
-      field = Field.new :name => "field", :display_name => "field", :enabled => "true"
+      field = Field.new :name => "diff_field", :display_name => "diff_field", :enabled => "true"
       form = FormSection.new :fields => [field], :name => "test_form"
 
       form.save!
       field.should be_enabled
+      
+      form.destroy
     end
   end
 end
