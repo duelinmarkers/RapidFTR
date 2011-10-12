@@ -12,11 +12,12 @@ gem 'mini_magick',    '1.3.2'
 gem 'pdf-reader',     '0.8.6'
 gem 'prawn',          '0.8.4'
 gem 'rails',          '2.3.11'
+gem 'rake',           '0.8.7'
 gem 'rest-client',    '1.3.0'
 gem 'subexec',        '0.0.4'
 gem 'uuidtools',      '2.1.1'
 gem 'validatable',    '1.6.7'
-gem 'sunspot',		  '1.1.0'
+gem 'sunspot',      '1.1.0'
 gem 'tzinfo'
 
 group :cucumber do
@@ -35,11 +36,11 @@ group :test do
 end
 
 group :metrics do
-	gem 'metric_fu',	  '2.1.0'
-	gem 'fattr',		  '2.2.0'
-  	gem 'arrayfields', 	  '4.7.4'
-  	gem 'map', 			  '4.6.1'
-  	gem 'ripper', 		  '1.0.2'
-  	gem 'rails_best_practices', '0.10.1'
+  gem 'metric_fu',            '2.1.0'
+  gem 'fattr',                '2.2.0'
+  gem 'arrayfields',          '4.7.4'
+  gem 'map',                  '4.6.1'
+  gem 'ripper',               '1.0.3'
+  gem 'rails_best_practices', '0.10.1'
 end
 
